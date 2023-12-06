@@ -3,8 +3,7 @@
     "explorer.fileNesting.enabled": true,
     "explorer.fileNesting.expand": false,
     "explorer.fileNesting.patterns": {
-        "*.ts": "$(capture).*",
-        "*.ts": "$(capture).test.ts",
+        "*.ts": "$(capture).*,$(capture).*.ts",
         "*.txt": "$(capture).*.txt",
     },
 }
