@@ -20,7 +20,7 @@ self.addEventListener("message", (event: any) => {
 
   //   console.log(label, min);
   //   console.timeEnd(label);
-  self.postMessage(min);
+  (self as any).postMessage(min);
   self.close();
 });
 

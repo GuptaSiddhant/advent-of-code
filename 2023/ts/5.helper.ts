@@ -8,6 +8,8 @@ function readInput(filename: string): string {
   return Deno.readTextFileSync(inputFilename);
 }
 
+const filename = "5.example";
+
 const mapNames = [
   "seed-to-soil",
   "soil-to-fertilizer",
@@ -19,7 +21,7 @@ const mapNames = [
 ];
 const rangeMap = new Map<string, number[][]>();
 mapNames.forEach((name) => {
-  const ranges = parseMapLines(readInput("5"), name)
+  const ranges = parseMapLines(readInput(filename), name)
     .map((range) => range.split(" ").map(Number))
     .sort((a, b) => a[1] - b[1]);
 
@@ -41,12 +43,31 @@ function getMappedValueFromSet(ranges: number[][], from: number): number {
 
   return to;
 }
+function getReversedMappedValueFromSet(ranges: number[][], to: number): number {
+  let from = to;
+  for (const [dest, source, length] of ranges) {
+    if (to >= dest && to <= dest + length) {
+      from = source + (to - dest);
+      break;
+    }
+  }
+
+  return from;
+}
 
 export function findLocation(seed: number) {
   let value = seed;
-
   mapNames.forEach((name) => {
     value = getMappedValueFromSet(rangeMap.get(name)!, value);
+  });
+
+  return value;
+}
+
+export function findSeed(location: number) {
+  let value = location;
+  mapNames.reverse().forEach((name) => {
+    value = getReversedMappedValueFromSet(rangeMap.get(name)!, value);
   });
 
   return value;

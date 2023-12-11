@@ -1,6 +1,6 @@
 import { readInput } from "./_helpers.ts";
 
-const filename = "5";
+const filename = "5.example";
 const actualInput = readInput(filename);
 
 console.log("Part 2 (Actual) :", await part2(actualInput));
