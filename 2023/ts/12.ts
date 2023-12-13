@@ -11,16 +11,17 @@ const exampleInput = readInput(filename + ".example");
 
 const memoizedFindPossibilities = memoize(findPossibilities);
 
-console.log("Part 1 (Example):", part1(exampleInput)); // 21
-console.log("Part 1 (Actual) :", part1(actualInput));
+// console.log("Part 1 (Example):", part1(exampleInput)); // 21
+// console.log("Part 1 (Actual) :", part1(actualInput));
 console.log("Part 2 (Example):", part2(exampleInput)); // 525152
 console.log("Part 2 (Actual) :", part2(actualInput));
 
 function part1(input: string) {
   const rows = parseInput(input);
-  const possibilities = rows.map(({ springs, damagedList }) =>
-    findPossibilities(springs, damagedList)
-  );
+  const possibilities = rows.map(({ springs, damagedList }, i) => {
+    console.log(i, springs);
+    return memoizedFindPossibilities(springs, damagedList);
+  });
   return possibilities.reduce((acc, a) => acc + a, 0);
 }
 
@@ -30,9 +31,10 @@ function part2(input: string) {
     damagedList: Array(5).fill(damagedList).flat(),
   }));
 
-  const possibilities = rows.map(({ springs, damagedList }) =>
-    memoizedFindPossibilities(springs, damagedList)
-  );
+  const possibilities = rows.map(({ springs, damagedList }, i) => {
+    console.log(i, springs);
+    return memoizedFindPossibilities(springs, damagedList);
+  });
   return possibilities.reduce((acc, a) => acc + a, 0);
 }
 
