@@ -3,7 +3,7 @@
  * @see https://adventofcode.com/2023/day/12
  */
 
-import { readInput } from "./_helpers.ts";
+import { readInput, memoize } from "./_helpers.ts";
 
 const filename = "12";
 const actualInput = readInput(filename);
@@ -105,20 +105,4 @@ function sum(...nums: number[] | (readonly number[])[]): number {
     }
   }
   return tot;
-}
-
-function memoize<Args extends unknown[], Result>(
-  func: (...args: Args) => Result
-): (...args: Args) => Result {
-  const stored = new Map<string, Result>();
-
-  return (...args) => {
-    const k = JSON.stringify(args);
-    if (stored.has(k)) {
-      return stored.get(k)!;
-    }
-    const result = func(...args);
-    stored.set(k, result);
-    return result;
-  };
 }
