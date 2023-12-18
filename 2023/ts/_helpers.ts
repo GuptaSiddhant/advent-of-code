@@ -26,3 +26,25 @@ export function memoize<Args extends unknown[], Result>(
     return result;
   };
 }
+
+export type Coordinate = { x: number; y: number };
+export function pathToGrid(cords: Coordinate[]) {
+  const allY = cords.map((c) => c.y);
+  const minY = Math.min(...allY);
+  const maxY = Math.max(...allY);
+  const allX = cords.map((c) => c.x);
+  const minX = Math.min(...allX);
+  const maxX = Math.max(...allX);
+
+  const grid: string[][] = [];
+  for (let y = minY; y <= maxY; y++) {
+    let line = "";
+    for (let x = minX; x <= maxX; x++) {
+      const c = cords.find((c) => c.x === x && c.y === y);
+      line += c ? "#" : ".";
+    }
+    grid.push(line.split(""));
+  }
+
+  return grid;
+}
