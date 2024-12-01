@@ -2,5 +2,6 @@
   "tasks": {
     "exec": "deno run -A",
     "dev": "deno run -A --watch"
-  }
+  },
+  "imports": {}
 }
