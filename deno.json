@@ -3,5 +3,9 @@
     "exec": "deno run -A",
     "dev": "deno run -A --watch"
   },
-  "imports": {}
+  "imports": {
+    "@std/assert": "jsr:@std/assert@^1.0.8",
+    "@std/path": "jsr:@std/path@^1.0.8"
+  },
+  "workspace": []
 }

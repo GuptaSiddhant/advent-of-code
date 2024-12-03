@@ -1,4 +1,4 @@
-import { join } from "https://deno.land/std@0.202.0/path/join.ts";
+import { join } from "@std/path";
 
 export function readInput(filename: string): string {
   const inputDir = import.meta.resolve(join("..", "inputs")).split("file:")[1];
