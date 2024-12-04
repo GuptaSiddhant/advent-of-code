@@ -1,4 +1,4 @@
-import { join } from "@std/path";
+import { join } from "jsr:@std/path";
 
 export function readInput(filename: string): string {
   const inputDir = import.meta.resolve(join("..", "inputs")).split("file:")[1];

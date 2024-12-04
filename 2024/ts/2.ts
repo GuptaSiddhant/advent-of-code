@@ -4,7 +4,7 @@
  */
 
 import { readInput } from "./_helpers.ts";
-import { assertEquals } from "@std/assert";
+import { assertEquals } from "jsr:@std/assert";
 
 const filename = "2";
 const actualInput = readInput(filename);
