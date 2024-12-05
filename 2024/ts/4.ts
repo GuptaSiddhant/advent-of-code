@@ -11,8 +11,8 @@ const exampleInput = readInput(filename + ".example");
 
 const values = ["X", "M", "A", "S"] as const;
 
-// console.log("Part 1 (Example):", part1(exampleInput)); // 18
-// console.log("Part 1 (Actual) :", part1(actualInput)); // 2642
+console.log("Part 1 (Example):", part1(exampleInput)); // 18
+console.log("Part 1 (Actual) :", part1(actualInput)); // 2642
 console.log("Part 2 (Example):", part2(exampleInput)); // 9
 console.log("Part 2 (Actual) :", part2(actualInput)); // 1974
 
@@ -64,12 +64,6 @@ function part2(input: string) {
   });
 
   return filtered.length;
-}
-
-function getXDirFromCoord(grid: Grid, key: CoordKey) {
-  console.log(key);
-
-  return false;
 }
 
 function getAllInDirFromCoord(grid: Grid, key: CoordKey, dir: Dir) {
