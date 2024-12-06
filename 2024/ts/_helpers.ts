@@ -27,7 +27,6 @@ export function memoize<Args extends unknown[], Result>(
   };
 }
 
-export type Coordinate = { x: number; y: number };
 export function pathToGrid(cords: Coordinate[]) {
   const allY = cords.map((c) => c.y);
   const minY = Math.min(...allY);
@@ -47,4 +46,183 @@ export function pathToGrid(cords: Coordinate[]) {
   }
 
   return grid;
+}
+
+export type Coordinate = { x: number; y: number };
+export type Grid<Value> = Map<CoordKey, Value>;
+export type CoordKey = `${number}-${number}`;
+export type Direction = "TL" | "TC" | "TR" | "CL" | "CR" | "BL" | "BC" | "BR";
+
+export function getAllInDirFromCoord<Value = string>(
+  grid: Grid<Value>,
+  key: CoordKey,
+  dir: Direction
+) {
+  const trace: CoordKey[] = [key];
+  const xValue = grid.get(key);
+  if (xValue === "X") {
+    const mKey = findNextCoordKeyInDir(key, dir);
+    trace.push(mKey);
+    const mValue = grid.get(mKey);
+    if (mValue === "M") {
+      const aKey = findNextCoordKeyInDir(mKey, dir);
+      trace.push(aKey);
+      const aValue = grid.get(aKey);
+      if (aValue === "A") {
+        const sKey = findNextCoordKeyInDir(aKey, dir);
+        trace.push(sKey);
+        const sValue = grid.get(sKey);
+        if (sValue === "S") {
+          return trace;
+        }
+      }
+    }
+  }
+  return false;
+}
+
+export function traverseGrid<Value = string>(
+  grid: Grid<Value>,
+  coordKeys: CoordKey[],
+  maxX: number,
+  maxY: number,
+  valueToCheck: Value
+) {
+  const map: [CoordKey, CoordKey][] = [];
+  for (const key of coordKeys) {
+    const value = grid.get(key);
+    if (value === valueToCheck) {
+      const nextCoordKeys = findAdjacentCoordKeys(key, maxX, maxY);
+      nextCoordKeys.forEach((nextKey) => {
+        map.push([key, nextKey]);
+      });
+    }
+  }
+  return map;
+}
+
+export function findAdjacentCoordKeys(
+  key: CoordKey,
+  maxX: number,
+  maxY: number
+): CoordKey[] {
+  const { x, y } = parseCoordKey(key);
+
+  const coordsSet = new Set<CoordKey>();
+  for (let i = x - 1; i <= x + 1; i++) {
+    for (let j = y - 1; j <= y + 1; j++) {
+      const newX = Math.min(Math.max(i, 0), maxX);
+      const newY = Math.min(Math.max(j, 0), maxY);
+      const newKey = createCoordKey(newX, newY);
+      if (newKey !== key) {
+        coordsSet.add(newKey);
+      }
+    }
+  }
+
+  return Array.from(coordsSet);
+}
+
+export function findNextCoordKeyInDir(key: CoordKey, dir: Direction): CoordKey {
+  const { x, y } = parseCoordKey(key);
+  switch (dir) {
+    case "TL":
+      return createCoordKey(x - 1, y - 1);
+    case "TC":
+      return createCoordKey(x - 1, y);
+    case "TR":
+      return createCoordKey(x - 1, y + 1);
+    case "CL":
+      return createCoordKey(x, y - 1);
+    case "CR":
+      return createCoordKey(x, y + 1);
+    case "BL":
+      return createCoordKey(x + 1, y - 1);
+    case "BC":
+      return createCoordKey(x + 1, y);
+    case "BR":
+      return createCoordKey(x + 1, y + 1);
+    default:
+      throw new Error("Undefined direction:", dir);
+  }
+}
+
+export function findDirFromCoord(key: CoordKey, newKey: CoordKey): Direction {
+  const { x, y } = parseCoordKey(key);
+  const { x: x2, y: y2 } = parseCoordKey(newKey);
+
+  let P1 = "";
+  let P2 = "";
+  if (x2 === x - 1) {
+    P1 = "T";
+  }
+  if (x2 === x) {
+    P1 = "C";
+  }
+  if (x2 === x + 1) {
+    P1 = "B";
+  }
+  if (y2 === y - 1) {
+    P2 = "L";
+  }
+  if (y2 === y) {
+    P2 = "C";
+  }
+  if (y2 === y + 1) {
+    P2 = "R";
+  }
+  return `${P1}${P2}` as Direction;
+}
+
+export function convertInputToGrid<Value>(
+  str: string,
+  separator = ""
+): {
+  grid: Grid<Value>;
+  maxX: number;
+  maxY: number;
+} {
+  const grid: Grid<Value> = new Map<CoordKey, Value>();
+  let maxX = 0;
+  let maxY = 0;
+
+  str.split("\n").forEach((row, x) => {
+    row.split(separator).forEach((cell, y) => {
+      grid.set(createCoordKey(x, y), cell as Value);
+      if (y > maxY) {
+        maxY = y;
+      }
+    });
+    if (x > maxX) {
+      maxX = x;
+    }
+  });
+
+  return { grid, maxX, maxY };
+}
+
+export function createCoordKey(x: number, y: number): CoordKey {
+  return `${x}-${y}`;
+}
+
+export function parseCoordKey(key: CoordKey): Coordinate {
+  const [x, y] = key.split("-").map(Number);
+  return { x, y };
+}
+
+export function drawGrid(grid: Grid<unknown>) {
+  const draw: unknown[][] = [];
+
+  grid.entries().forEach(([key, value]) => {
+    const { x, y } = parseCoordKey(key);
+    if (!draw[x]) {
+      draw[x] = [];
+    }
+
+    draw[x][y] = value;
+  });
+
+  draw.forEach((row) => console.log(row.join("")));
+
+  return draw;
 }
