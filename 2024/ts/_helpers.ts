@@ -226,3 +226,44 @@ export function drawGrid(grid: Grid<unknown>) {
 
   return draw;
 }
+
+export function getPermutations<T>(inputArr: T[]) {
+  const result: T[][] = [];
+
+  const permute = (arr: T[], m: T[] = []) => {
+    if (arr.length === 0) {
+      result.push(m);
+    } else {
+      for (let i = 0; i < arr.length; i++) {
+        const curr = arr.slice();
+        const next = curr.splice(i, 1);
+        permute(curr.slice(), m.concat(next));
+      }
+    }
+  };
+
+  permute(inputArr);
+
+  return result;
+}
+
+export function getCombinations<T>(valuesArray: T[]) {
+  const combinations: T[][] = [];
+  let temp = [];
+  const sLength = Math.pow(2, valuesArray.length);
+
+  for (let i = 0; i < sLength; i++) {
+    temp = [];
+    for (let j = 0; j < valuesArray.length; j++) {
+      if (i & Math.pow(2, j)) {
+        temp.push(valuesArray[j]);
+      }
+    }
+    if (temp.length > 0) {
+      combinations.push(temp);
+    }
+  }
+
+  combinations.sort((a, b) => a.length - b.length);
+  return combinations;
+}
