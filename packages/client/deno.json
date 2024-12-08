@@ -1,0 +1,7 @@
+{
+  "name": "@aoc/client",
+  "exports": {
+    ".": "./client.ts",
+    "./transforms": "./transforms.ts"
+  }
+}

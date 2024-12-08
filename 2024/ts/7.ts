@@ -53,7 +53,7 @@ function part1(input: string) {
   return validEquations.reduce((acc, { result }) => acc + result, 0);
 }
 
-function generateOperatorCombinations<T>(
+export function generateOperatorCombinations<T>(
   values: Readonly<[T, ...T[]]>,
   count: number
 ): T[][] {
