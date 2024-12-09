@@ -1,25 +1,19 @@
-/**
- * Advent of code 2024 (TS) - Day 2
- * @see https://adventofcode.com/2024/day/2
- */
+import { solvePart } from "./_utils.ts";
 
-import { readInput } from "./_helpers.ts";
-import { assertEquals } from "jsr:@std/assert";
+const year = 2024;
+const day = 2;
+const example = `7 6 4 2 1
+1 2 7 8 9
+9 7 6 2 1
+1 3 2 4 5
+8 6 4 4 1
+1 3 6 7 9`;
 
-const filename = "2";
-const actualInput = readInput(filename);
-const exampleInput = readInput(filename + ".example");
+solvePart(year, day, 1, part1, { input: example, result: 2 });
+solvePart(year, day, 2, part2, { input: example, result: 4 });
 
-console.log("Part 1 (Example)", part1(exampleInput));
-assertEquals(part1(exampleInput), 2);
-console.log("Part 1 (Actual) :", part1(actualInput)); // 472
-console.log("Part 2 (Example):", part2(exampleInput)); // 4
-console.log("Part 2 (Actual) :", part2(actualInput)); //
-// not 505
-
-// Part 1:
 function part1(input: string) {
-  const { reports } = x(input);
+  const { reports } = parseInput(input);
   let safeCount = 0;
 
   for (const report of reports) {
@@ -31,9 +25,8 @@ function part1(input: string) {
   return safeCount;
 }
 
-// Part 2:
 function part2(input: string) {
-  const { reports } = x(input);
+  const { reports } = parseInput(input);
   let safeCount = 0;
 
   for (let i = 0; i < reports.length; i++) {
@@ -58,7 +51,7 @@ function part2(input: string) {
   return safeCount;
 }
 
-function x(input: string) {
+function parseInput(input: string) {
   const reports = input
     .split("\n")
     .map((line) => line.split(/\s+/).map(Number));
