@@ -1,33 +1,31 @@
-/**
- * Advent of code 2024 (TS) - Day 4
- * @see https://adventofcode.com/2024/day/4
- */
-
 import {
-  readInput,
   convertInputToGrid,
-  parseCoordKey,
-  findNextCoordKeyInDir,
   findDirFromCoord,
+  findNextCoordKeyInDir,
   getAllInDirFromCoord,
+  parseCoordKey,
+  solvePart,
   traverseGrid,
-} from "./_helpers.ts";
+} from "./_utils.ts";
 
-const filename = "4";
-const actualInput = readInput(filename);
-const exampleInput = readInput(filename + ".example");
+const year = 2024;
+const day = 4;
+const example = `MMMSXXMASM
+MSAMXMSMSA
+AMXSXMAAMM
+MSAMASMSMX
+XMASAMXAMM
+XXAMMXXAMA
+SMSMSASXSS
+SAXAMASAAA
+MAMMMXMMMM
+MXMXAXMASX`;
 
-const values = ["X", "M", "A", "S"] as const;
-type Value = (typeof values)[number];
+solvePart(year, day, 1, part1, { input: example, result: 18 });
+solvePart(year, day, 2, part2, { input: example, result: 9 });
 
-console.log("Part 1 (Example):", part1(exampleInput)); // 18
-console.log("Part 1 (Actual) :", part1(actualInput)); // 2642
-console.log("Part 2 (Example):", part2(exampleInput)); // 9
-console.log("Part 2 (Actual) :", part2(actualInput)); // 1974
-
-// Part 1:
 function part1(input: string) {
-  const { grid, maxX, maxY } = convertInputToGrid<Value>(input);
+  const { grid, maxX, maxY } = convertInputToGrid<Cell>(input);
   const startingCoords = traverseGrid(grid, [...grid.keys()], maxX, maxY, "X");
   const filtered = startingCoords
     .map(([key, nextKey]) =>
@@ -39,7 +37,7 @@ function part1(input: string) {
 }
 
 function part2(input: string) {
-  const { grid, maxX, maxY } = convertInputToGrid<Value>(input);
+  const { grid, maxX, maxY } = convertInputToGrid<Cell>(input);
   const startingCoords = Array.from(
     grid.entries().filter(([key, value]) => {
       const { x, y } = parseCoordKey(key);
@@ -74,3 +72,5 @@ function part2(input: string) {
 
   return filtered.length;
 }
+
+type Cell = "X" | "M" | "A" | "S";

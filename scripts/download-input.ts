@@ -39,12 +39,14 @@ for (const day of days) {
       year: Number(year),
       day: day,
       token,
-    }).then((txt) =>
-      txt
-        .split("\n")
-        .filter((line) => line.trim() !== "")
-        .join("\n")
-    );
+    }).then((txt) => {
+      const lines = txt.split("\n");
+      if (lines.at(-1) === "") {
+        lines.pop();
+      }
+
+      return lines.join("\n");
+    });
 
     Deno.writeTextFile(filePath, input);
     console.info(`%c Downloaded and saved input`, "color: green;");

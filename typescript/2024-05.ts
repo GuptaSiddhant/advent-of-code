@@ -1,27 +1,41 @@
-/**
- * Advent of code 2024 (TS) - Day 5
- * @see https://adventofcode.com/2024/day/5
- */
+import { solvePart } from "./_utils.ts";
 
-import { readInput } from "./_helpers.ts";
+const year = 2024;
+const day = 5;
+const example = `47|53
+97|13
+97|61
+97|47
+75|29
+61|13
+75|53
+29|13
+97|29
+53|29
+61|53
+97|53
+61|29
+47|13
+75|47
+97|75
+47|61
+75|61
+47|29
+75|13
+53|13
 
-const filename = "5";
-const actualInput = readInput(filename);
-const exampleInput = readInput(filename + ".example");
+75,47,61,53,29
+97,61,53,29,13
+75,29,13
+75,97,47,61,53
+61,13,29
+97,13,75,29,47`;
 
-console.log("Part 1 (Example):", part1(exampleInput)); // 143
-console.log("Part 1 (Actual) :", part1(actualInput)); // 5991
-console.log("Part 2 (Example):", part2(exampleInput)); // 123
-console.log("Part 2 (Actual) :", part2(actualInput)); // 5479
+solvePart(year, day, 1, part1, { input: example, result: 143 });
+solvePart(year, day, 2, part2, { input: example, result: 123 });
 
-// Part 1:
 function part1(input: string) {
-  const parts = input.split("\n\n");
-
-  const ruleMap = createRuleMap(parts[0]);
-  const updates = parts[1]
-    .split("\n")
-    .map((line) => line.split(",").map(Number));
+  const { updates, ruleMap } = parseInput(input);
 
   const correctUpdates = updates.filter((update) => {
     for (let i = 0; i < update.length; i++) {
@@ -51,14 +65,8 @@ function part1(input: string) {
   }, 0);
 }
 
-// Part 2:
 function part2(input: string) {
-  const parts = input.split("\n\n");
-
-  const ruleMap = createRuleMap(parts[0]);
-  const updates = parts[1]
-    .split("\n")
-    .map((line) => line.split(",").map(Number));
+  const { ruleMap, updates } = parseInput(input);
 
   const inCorrectUpdates = updates.filter((update) => {
     for (let i = 0; i < update.length; i++) {
@@ -96,6 +104,17 @@ function part2(input: string) {
       update.length % 2 === 1 ? (update.length - 1) / 2 : update.length / 2;
     return acc + update[middleIndex];
   }, 0);
+}
+
+function parseInput(input: string) {
+  const parts = input.split("\n\n");
+
+  const ruleMap = createRuleMap(parts[0]);
+  const updates = parts[1]
+    ?.split("\n")
+    .map((line) => line.split(",").map(Number));
+
+  return { updates, ruleMap };
 }
 
 function createRuleMap(rulePart: string) {

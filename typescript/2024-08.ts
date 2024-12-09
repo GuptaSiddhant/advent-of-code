@@ -1,26 +1,58 @@
-/**
- * Advent of code 2024 (TS) - Day 8
- * @see https://adventofcode.com/2024/day/8
- */
+import {
+  convertInputToGrid,
+  CoordKey,
+  createCoordKey,
+  Grid,
+  parseCoordKey,
+  solvePart,
+} from "./_utils.ts";
 
-import { parseCoordKey } from "./_helpers.ts";
-import { Grid } from "./_helpers.ts";
-import { createCoordKey } from "./_helpers.ts";
-import { convertInputToGrid, CoordKey } from "./_helpers.ts";
-import { readInput } from "./_helpers.ts";
+const year = 2024;
+const day = 8;
+const example1 = `............
+........0...
+.....0......
+.......0....
+....0.......
+......A.....
+............
+............
+........A...
+.........A..
+............
+............`;
+const example2 = `T.........
+...T......
+.T........
+..........
+..........
+..........
+..........
+..........
+..........
+..........`;
 
-const filename = "8";
-const actualInput = readInput(filename);
-const exampleInput = readInput(filename + ".example");
+solvePart(
+  year,
+  day,
+  1,
+  part1,
+  { input: example1, result: 14 },
+  { input: example2, result: 3 }
+);
+
+solvePart(
+  year,
+  day,
+  2,
+  part2,
+  { input: example1, result: 34 },
+  { input: example2, result: 9 }
+);
 
 const antennaRegex = /^[A-Za-z0-9]$/;
 type Cell = "." | (string & {});
 const pairSeparator = ":";
-
-// console.log("Part 1 (Example):", part1(exampleInput)); // 14
-// console.log("Part 1 (Actual) :", part1(actualInput)); //
-console.log("Part 2 (Example):", part2(exampleInput)); // 34
-console.log("Part 2 (Actual) :", part2(actualInput)); // 1017
 
 function part1(input: string) {
   const { grid, maxX, maxY } = convertInputToGrid<Cell>(input);

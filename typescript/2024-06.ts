@@ -1,15 +1,27 @@
-/**
- * Advent of code 2024 (TS) - Day 6
- * @see https://adventofcode.com/2024/day/6
- */
+import {
+  convertInputToGrid,
+  CoordKey,
+  Direction,
+  findNextCoordKeyInDir,
+  Grid,
+  solvePart,
+} from "./_utils.ts";
 
-import type { CoordKey, Direction, Grid } from "./_helpers.ts";
-import { findNextCoordKeyInDir } from "./_helpers.ts";
-import { readInput, convertInputToGrid } from "./_helpers.ts";
+const year = 2024;
+const day = 6;
+const example = `....#.....
+.........#
+..........
+..#.......
+.......#..
+..........
+.#..^.....
+........#.
+#.........
+......#...`;
 
-const filename = "6";
-const actualInput = readInput(filename);
-const exampleInput = readInput(filename + ".example");
+solvePart(year, day, 1, part1, { input: example, result: 41 });
+solvePart(year, day, 2, part2, { input: example, result: 6 });
 
 const heads = ["^", "v", "<", ">"] as const;
 type Head = (typeof heads)[number];
@@ -21,50 +33,13 @@ const dirMap = {
   "<": { nextHead: "^", dir: "CL" },
 } as const satisfies Record<Head, { nextHead: Head; dir: Direction }>;
 
-// console.log("Part 1 (Example):", part1(exampleInput)); // 41
-// console.log("Part 1 (Actual) :", part1(actualInput)); // 4964
-console.log("Part 2 (Example):", part2_brute(exampleInput)); // 6
-// console.log("Part 2 (Actual) :", part2_brute(actualInput)); // 1740
-
-// Part 1:
 function part1(input: string) {
   const { grid } = convertInputToGrid<Cell>(input);
   const { stepsMap } = generateStepsMap(grid);
   return stepsMap.size;
 }
 
-// Part 2:
-function part2_attempt(input: string) {
-  const { grid } = convertInputToGrid<Cell>(input);
-
-  const testGrid = new Map(grid);
-  const { stepsMap } = generateStepsMap(testGrid);
-  const keysWithPlus1Step = Array.from(
-    stepsMap.entries().filter(([, value]) => value.length > 1)
-  );
-  const possibleObstacles: CoordKey[] = keysWithPlus1Step
-    .map(([key, values]) => {
-      const heads = values.slice(1);
-      return heads.map((head) => {
-        const { dir } = dirMap[head];
-        return findNextCoordKeyInDir(key, dir);
-      });
-    })
-    .flat();
-  console.log(keysWithPlus1Step, possibleObstacles);
-
-  let loopers = 0;
-  for (const obsKey of possibleObstacles) {
-    const newGrid = new Map(grid);
-    newGrid.set(obsKey, "O");
-    const { looped } = generateStepsMap(newGrid, obsKey);
-    if (looped) loopers++;
-  }
-
-  return loopers;
-}
-
-function part2_brute(input: string) {
+function part2(input: string) {
   const { grid } = convertInputToGrid<Cell>(input);
   let loopers = 0;
 
