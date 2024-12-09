@@ -1,9 +1,10 @@
 {
-    "deno.enable": true,
-    "explorer.fileNesting.enabled": true,
-    "explorer.fileNesting.expand": false,
-    "explorer.fileNesting.patterns": {
-        "*.ts": "$(capture).*,$(capture).*.ts",
-        "*.txt": "$(capture).*.txt",
-    },
+  "deno.enable": true,
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
+    "*.ts": "$(capture).*,$(capture).*.ts",
+    "*.txt": "$(capture).*.txt"
+  },
+  "oxc.enable": false
 }

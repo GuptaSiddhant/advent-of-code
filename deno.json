@@ -1,7 +1,8 @@
 {
   "tasks": {
-    "exec": "deno run -A",
-    "dev": "deno run -A --watch"
+    "exec": "deno run -R --allow-run ./scripts/exec-solution.ts",
+    "watch": "deno run -R --allow-run ./scripts/exec-solution.ts -w",
+    "download": "deno -WREN ./scripts/download-input.ts"
   },
   "workspace": ["packages/**"]
 }

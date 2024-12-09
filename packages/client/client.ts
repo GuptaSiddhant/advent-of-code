@@ -18,12 +18,7 @@ const consoleSuccess = console.log.bind(this, "✅");
 const consoleFail = console.log.bind(this, "❌");
 
 function genCache(): Cache {
-  return {
-    get: localStorage.getItem,
-    set: localStorage.setItem,
-    // delete: localStorage.removeItem,
-    // clear: localStorage.clear,
-  };
+  return { get: localStorage.getItem, set: localStorage.setItem };
 }
 
 /**
@@ -59,13 +54,7 @@ export class AocClient<T = string[]> {
       throw new Error("Missing or invalid token option");
     }
 
-    this.config = {
-      year,
-      day,
-      token,
-      useCache: true,
-    };
-
+    this.config = { year, day, token };
     this.cache = genCache();
     this.transform = transform ?? (lines as TransformFn<T>);
   }

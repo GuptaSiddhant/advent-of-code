@@ -9,10 +9,6 @@ export type Config = {
   year: number;
   day: number;
   token?: string;
-  /**
-   * @default true
-   */
-  useCache?: boolean;
 };
 
 export type Cache = {

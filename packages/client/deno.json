@@ -2,6 +2,7 @@
   "name": "@aoc/client",
   "exports": {
     ".": "./client.ts",
+    "./api": "./api.ts",
     "./transforms": "./transforms.ts"
   }
 }
